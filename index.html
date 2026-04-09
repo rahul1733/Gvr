@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Zero Negative Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(180deg,#5f259f,#3b0a6b);
+  color:#fff;
+}
+
+/* Header */
+.header{
+  text-align:center;
+  padding:15px;
+}
+.logo{
+  width:110px;
+}
+.title{
+  font-size:20px;
+  font-weight:bold;
+}
+
+/* Container */
+.container{
+  max-width:420px;
+  margin:10px auto;
+  padding:10px;
+}
+
+/* Banner */
+.banner{
+  background:#ffe4e4;
+  color:#8b0000;
+  padding:12px;
+  border-radius:12px;
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+/* Card */
+.card{
+  background:#ffffff;
+  color:#000;
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:12px;
+}
+
+/* Input */
+input{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  margin-bottom:10px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+/* Button */
+button{
+  width:100%;
+  padding:12px;
+  background:#5f259f;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+}
+
+/* Output Big Card */
+.outputCard{
+  background:linear-gradient(135deg,#ffffff,#f3e8ff);
+  color:#000;
+  padding:18px;
+  border-radius:18px;
+  margin-top:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.section{
+  margin-bottom:12px;
+}
+
+.secTitle{
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+/* Result Colors */
+.safe{color:#16a34a;}
+.warn{color:#ca8a04;}
+.danger{color:#dc2626;}
+
+/* Progress */
+.bar{
+  height:10px;
+  background:#ddd;
+  border-radius:10px;
+}
+.fill{
+  height:100%;
+  background:#5f259f;
+  border-radius:10px;
+}
+
+.label{
+  font-size:12px;
+  margin-top:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png">
+<div class="title">ZERO NEGATIVE ADJUSTMENT by Rahul Bhatt</div>
+</div>
+
+<div class="container">
+
+<div class="banner">
+📌 ACE app → Salary Details me jaakar  
+11th se 10th tak ka Gross & Valid TP count karo  
+❌ Sunday / Holiday include mat karo
+</div>
+
+<div class="card">
+
+<label>Gross TP (11–10)</label>
+<input type="number" id="gross">
+
+<label>Valid TP (11–10)</label>
+<input type="number" id="valid">
+
+<label>📅 1–21 Valid TP</label>
+<input type="number" id="tp21">
+
+<button onclick="calc()">Calculate</button>
+
+</div>
+
+<!-- OUTPUT -->
+<div id="output" class="outputCard"></div>
+
+<!-- Progress -->
+<div class="card">
+
+<div class="label">🎯 220 TP</div>
+<div class="bar"><div id="p1" class="fill"></div></div>
+
+<div class="label">📅 150 TP</div>
+<div class="bar"><div id="p2" class="fill"></div></div>
+
+<div class="label">📊 GVR</div>
+<div class="bar"><div id="p3" class="fill"></div></div>
+
+</div>
+
+</div>
+
+<script>
+
+function calc(){
+
+let g = Number(gross.value);
+let v = Number(valid.value);
+let t = Number(tp21.value);
+
+let gvr = g>0 ? (v/g)*100 : 0;
+gvr = gvr.toFixed(2);
+
+// progress
+p1.style.width = Math.min((v/220)*100,100)+"%";
+p2.style.width = Math.min((t/150)*100,100)+"%";
+p3.style.width = Math.min((gvr/85)*100,100)+"%";
+
+let text = "";
+
+// Condition 1
+let c1 = (v >= 220) ? "✅ 220 TP Complete" : "❌ 220 TP Complete nahi";
+
+// Condition 2
+let c2 = "";
+if(t >= 150){
+  if(gvr >= 85){
+    c2 = "✅ 150 TP Complete<br>✅ GVR ≥ 85%";
+  }
+  else if(gvr >= 80){
+    c2 = "✅ 150 TP Complete<br>⚠️ GVR 80–84%";
+  }
+  else{
+    c2 = "✅ 150 TP Complete<br>❌ GVR < 80%";
+  }
+} else {
+  c2 = "❌ 150 TP Complete nahi";
+}
+
+// Final Result
+let result = "";
+let className = "";
+
+if(v >= 220){
+  result = "🟢 No Deduction";
+  className = "safe";
+}
+else if(t >= 150){
+
+  if(gvr >= 85){
+    result = "🟢 No Deduction";
+    className = "safe";
+  }
+  else if(gvr >= 80){
+    result = "🟡 Half Deduction";
+    className = "warn";
+  }
+  else{
+    result = "🔴 Full Deduction";
+    className = "danger";
+  }
+
+}
+else{
+  result = "🔴 Full Deduction";
+  className = "danger";
+}
+
+// Output UI
+text = `
+<div class="section">
+<b>📊 GVR:</b> ${gvr}%
+</div>
+
+<div class="section">
+<div class="secTitle">🎯 Condition 1</div>
+${c1}
+</div>
+
+<div class="section">
+<div class="secTitle">📅 Condition 2</div>
+${c2}
+</div>
+
+<div class="section">
+<div class="secTitle">💰 Final Result</div>
+<span class="${className}">${result}</span>
+</div>
+`;
+
+output.innerHTML = text;
+
+}
+
+</script>
+
+</body>
+</html>
