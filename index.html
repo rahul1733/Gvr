@@ -9,120 +9,84 @@
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(180deg,#5f259f,#3b0a6b);
+  background:linear-gradient(180deg,#4c1d95,#1e093a);
   color:#fff;
 }
 
-/* Header */
-.header{
-  text-align:center;
+.header{text-align:center;padding:20px;}
+.logoBox{display:inline-block;background:#fff;padding:10px 14px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.4);}
+.logo{width:90px;}
+.title{font-size:22px;font-weight:bold;margin-top:10px;}
+
+.container{max-width:420px;margin:10px auto;padding:10px;}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  border-radius:16px;
   padding:15px;
-}
-.logo{
-  width:110px;
-}
-.title{
-  font-size:20px;
-  font-weight:bold;
+  margin-bottom:14px;
+  border:1px solid rgba(255,255,255,0.2);
 }
 
-/* Container */
-.container{
-  max-width:420px;
-  margin:10px auto;
-  padding:10px;
-}
-
-/* Banner */
 .banner{
-  background:#ffe4e4;
-  color:#8b0000;
+  background:rgba(255,0,0,0.1);
+  border:1px solid rgba(255,0,0,0.3);
+  color:#ffb4b4;
   padding:12px;
   border-radius:12px;
   font-size:13px;
-  margin-bottom:12px;
 }
 
-/* Card */
-.card{
-  background:#ffffff;
-  color:#000;
-  padding:15px;
-  border-radius:15px;
-  margin-bottom:12px;
-}
-
-/* Input */
+label{font-size:14px;}
 input{
   width:100%;
   padding:12px;
-  margin-top:6px;
-  margin-bottom:10px;
+  margin:6px 0 10px;
   border-radius:10px;
-  border:1px solid #ccc;
+  border:none;
 }
 
-/* Button */
 button{
   width:100%;
-  padding:12px;
-  background:#5f259f;
+  padding:13px;
+  background:linear-gradient(90deg,#7c3aed,#5f259f);
   color:#fff;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   font-size:16px;
 }
 
-/* Output Big Card */
 .outputCard{
-  background:linear-gradient(135deg,#ffffff,#f3e8ff);
-  color:#000;
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(12px);
   padding:18px;
   border-radius:18px;
-  margin-top:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
-.section{
-  margin-bottom:12px;
-}
+.section{margin-bottom:14px;}
+.secTitle{font-weight:bold;}
 
-.secTitle{
-  font-weight:bold;
-  margin-bottom:5px;
-}
+.safe{color:#4ade80;}
+.warn{color:#facc15;}
+.danger{color:#f87171;}
 
-/* Result Colors */
-.safe{color:#16a34a;}
-.warn{color:#ca8a04;}
-.danger{color:#dc2626;}
+.bar{height:14px;background:rgba(255,255,255,0.2);border-radius:20px;}
+.fill{height:100%;border-radius:20px;text-align:right;font-size:10px;color:#fff;padding-right:6px;}
 
-/* Progress */
-.bar{
-  height:10px;
-  background:#ddd;
-  border-radius:10px;
-}
-.fill{
-  height:100%;
-  background:#5f259f;
-  border-radius:10px;
-}
-
-.label{
-  font-size:12px;
-  margin-top:8px;
-}
-
+.purple{background:linear-gradient(90deg,#a78bfa,#7c3aed);}
+.orange{background:linear-gradient(90deg,#fbbf24,#f97316);}
+.green{background:linear-gradient(90deg,#4ade80,#22c55e);}
 </style>
 </head>
 
 <body>
 
-<!-- Header -->
 <div class="header">
+<div class="logoBox">
 <img class="logo" src="https://download.logo.wine/logo/PhonePe/PhonePe-Logo.wine.png">
-  <div class="title">Smart TP Calculation By Rahul Bhatt</div>
+</div>
+<div class="title">Smart TP Calculation By Rahul Bhatt</div>
 </div>
 
 <div class="container">
@@ -135,34 +99,25 @@ button{
 
 <div class="card">
 
-<label>Gross TP (11–10)</label>
+<label>📊 11th Last Month – 10th This Month (Gross TP)</label>
 <input type="number" id="gross">
 
-<label>Valid TP (11–10)</label>
+<label>✅ 11th Last Month – 10th This Month (Valid TP)</label>
 <input type="number" id="valid">
 
-<label>📅 1–21 Valid TP</label>
+<label>📅 1st – 21st TP</label>
 <input type="number" id="tp21">
 
 <button onclick="calc()">Calculate</button>
 
 </div>
 
-<!-- OUTPUT -->
 <div id="output" class="outputCard"></div>
 
-<!-- Progress -->
 <div class="card">
-
-<div class="label">🎯 220 TP</div>
-<div class="bar"><div id="p1" class="fill"></div></div>
-
-<div class="label">📅 150 TP</div>
-<div class="bar"><div id="p2" class="fill"></div></div>
-
-<div class="label">📊 GVR</div>
-<div class="bar"><div id="p3" class="fill"></div></div>
-
+<div>🎯 220 TP<div class="bar"><div id="p1" class="fill purple"></div></div></div>
+<div>📅 150 TP<div class="bar"><div id="p2" class="fill orange"></div></div></div>
+<div>📊 GVR<div class="bar"><div id="p3" class="fill green"></div></div></div>
 </div>
 
 </div>
@@ -176,17 +131,21 @@ let v = Number(valid.value);
 let t = Number(tp21.value);
 
 let gvr = g>0 ? (v/g)*100 : 0;
-gvr = gvr.toFixed(2);
+gvr = Number(gvr.toFixed(2));
 
 // progress
 p1.style.width = Math.min((v/220)*100,100)+"%";
 p2.style.width = Math.min((t/150)*100,100)+"%";
-p3.style.width = Math.min((gvr/85)*100,100)+"%";
+p3.style.width = Math.min((gvr/90)*100,100)+"%";
 
-let text = "";
+// GAP CALC
+let gap220 = Math.max(0, 220 - v);
+let gap150 = Math.max(0, 150 - t);
 
 // Condition 1
-let c1 = (v >= 220) ? "✅ 220 TP Complete" : "❌ 220 TP Complete nahi";
+let c1 = v >= 220 
+  ? "✅ 220 TP Complete"
+  : `❌ 220 TP Complete nahi<br>👉 ${gap220} TP aur chahiye`;
 
 // Condition 2
 let c2 = "";
@@ -195,49 +154,29 @@ if(t >= 150){
     c2 = "✅ 150 TP Complete<br>✅ GVR ≥ 85%";
   }
   else if(gvr >= 80){
-    c2 = "✅ 150 TP Complete<br>⚠️ GVR 80–84%";
+    c2 = "⚠️ GVR 80–84%";
   }
   else{
-    c2 = "✅ 150 TP Complete<br>❌ GVR < 80%";
+    c2 = "❌ GVR < 80%";
   }
 } else {
-  c2 = "❌ 150 TP Complete nahi";
+  c2 = `❌ 150 TP Complete nahi<br>👉 ${gap150} TP aur chahiye`;
 }
 
-// Final Result
-let result = "";
-let className = "";
-
-if(v >= 220){
-  result = "🟢 No Deduction";
-  className = "safe";
+// result
+let result="",className="";
+if(gvr>=90){result="🟢 No Deduction (High GVR)";className="safe";}
+else if(v>=220){result="🟢 No Deduction";className="safe";}
+else if(t>=150){
+  if(gvr>=85){result="🟢 No Deduction";className="safe";}
+  else if(gvr>=80){result="🟡 Half Deduction";className="warn";}
+  else{result="🔴 Full Deduction";className="danger";}
 }
-else if(t >= 150){
+else{result="🔴 Full Deduction";className="danger";}
 
-  if(gvr >= 85){
-    result = "🟢 No Deduction";
-    className = "safe";
-  }
-  else if(gvr >= 80){
-    result = "🟡 Half Deduction";
-    className = "warn";
-  }
-  else{
-    result = "🔴 Full Deduction";
-    className = "danger";
-  }
-
-}
-else{
-  result = "🔴 Full Deduction";
-  className = "danger";
-}
-
-// Output UI
-text = `
-<div class="section">
-<b>📊 GVR:</b> ${gvr}%
-</div>
+// output
+output.innerHTML = `
+<div class="section"><b>📊 GVR:</b> ${gvr}%</div>
 
 <div class="section">
 <div class="secTitle">🎯 Condition 1</div>
@@ -254,8 +193,6 @@ ${c2}
 <span class="${className}">${result}</span>
 </div>
 `;
-
-output.innerHTML = text;
 
 }
 
